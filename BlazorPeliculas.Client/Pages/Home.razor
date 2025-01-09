@@ -1,0 +1,61 @@
+﻿@page "/"
+@inject IRepositorio repositorio
+
+<PageTitle> Peliculas Blazor</PageTitle>
+
+ <div>
+	<h3>Peliculas</h3>
+	<ListadoDePeliculas Peliculas="Peliculas" />
+</div>
+
+@code {
+
+	public List<Pelicula> Peliculas {get; set;} = null!;
+
+	protected override void OnInitialized()
+	{
+		Peliculas = repositorio.ObtenerPeliculas();
+	}
+
+}
+
+
+<!-- Forma IMPLICITA de generar codigo con HTML y C# 
+
+<p>
+	Hola, Arroba_UtilidadesString.transformar(nombre)
+	buenas tardes
+</p>
+
+
+Arroba_code {
+	string nombre = "VaLeNtin";
+}
+-->
+<!-- Forma EXPLICITA de generar codigo con HTML y C#
+<p>Vamos a sumar 2 + 2 = Arroba_(2 + 2)</p>
+-->
+
+
+
+<!-- Se usa una expresión lambda. Se genera un onclick para que funcione como evento y lo que esté del otro lado de la flecha será lo que oocurra
+<button Arroba_onclick=Arroba_(() => Console.WriteLine("Me han clieckeado") )>Presioname</button>
+-->
+
+
+
+<!--
+	si queremos usar una forma implicita hacemos lo siguiente
+
+<button Arroba_onclick=Arroba_ManejarClickBoton )>Presioname</button>
+
+Arroba_code {
+
+  void ManejarClickBoton()
+	{
+	  Console.WriteLine("Me han clieckeado desde una funcion")
+	}
+
+}
+-->
+

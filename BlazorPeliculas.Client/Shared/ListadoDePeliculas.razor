@@ -1,0 +1,34 @@
+﻿@inject IJSRuntime Js
+
+<div style="display: flex; flex-wrap: wrap; align-items: center">
+		<ListadoGenerico Listado="Peliculas">
+			<HayRegistros>
+				<PeliculaIndividual Pelicula="context"
+									EliminarPelicula="EliminarPelicula" />
+			</HayRegistros>
+		</ListadoGenerico>
+</div>
+
+
+
+@* El context representa el elemento que le paso a HayRegistros. *@
+
+@code {
+
+	//Colocamos un parametro o atributo <-- Siempre debe ser public
+	[Parameter]
+	[EditorRequired]  //Parametro requerido para indicar que algo es obligatorio. Esto genera una advertencia por lo que permite compilar la App.
+	public List<Pelicula>? Peliculas { get; set; }
+
+	private async Task EliminarPelicula(Pelicula pelicula)
+	{
+		var Confirmado = await Js.Confirmar($"¿Desea eliminar la pelicula {pelicula.Nombre}?"); // encapsulo el metodo de JS en una clase IJSRuntimeEtensionMethods.
+
+		if (Confirmado)
+		{
+			Console.WriteLine("Eliminando una pelicula");
+			Peliculas!.Remove(pelicula);
+			//Agrego el ! dado que no va a ser nulo por que es un parametro requerido (EditorRequired)
+		}
+	}
+}

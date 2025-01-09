@@ -1,0 +1,35 @@
+﻿<div class="me-2 mb-2" style="text-align: center">
+	<a href="@urlPelicula">
+		<img src="@Pelicula.Poster" alt="poster" style="width: 225px; height: 300px" />
+	</a>
+	<p style="max-width: 225px; height: 44px; font-size: 15px; font-weight: bold">
+		<a href="@urlPelicula" class="text-decoration-none">@Pelicula.Nombre</a>
+	</p>
+	<div>
+		<a class="btn btn-info">Editar</a>
+		<button type="button" class="btn btn-danger"
+				@onclick=@(()=> EliminarPelicula.InvokeAsync(Pelicula))>
+			Borrar
+		</button>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	[EditorRequired] //Parametro requerido para indicar que algo es obligatorio. Esto genera una advertencia por lo que permite compilar la App.
+	public Pelicula Pelicula { get; set; } = null!;
+
+	[Parameter]
+	public bool MostrarBotones { get; set; } = false;
+
+	[Parameter]
+	public EventCallback<Pelicula> EliminarPelicula { get; set; }
+	//Le paso una pelicula al eventcallback  para eliminar
+
+	private string urlPelicula = string.Empty;
+
+	protected override void OnInitialized()
+	{
+		urlPelicula = $"peliula/";
+	}
+}

@@ -1,0 +1,11 @@
+﻿<input type="text" placeholder="PH por defecto" @attributes="ParametrosAdicionales" />
+
+@* @attributes para pasarle un conjunto de atributos de golpe al HTML, los cuales vienen en ParametrosAdicionales *@
+
+@code {
+	[Parameter(CaptureUnmatchedValues = true)]
+	public IDictionary<string, object>? ParametrosAdicionales { get; set; }
+
+	// De esta manera le paso al componente un parametro arbitrario, permitiendole capturar valores o parametros no declarados
+
+}
