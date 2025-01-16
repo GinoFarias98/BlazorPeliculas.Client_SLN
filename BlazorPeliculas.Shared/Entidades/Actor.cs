@@ -15,6 +15,6 @@ namespace BlazorPeliculas.Shared.Entidades
         public string Nombre { get; set; } = null!;
         public string? Biografia { get; set; }
         public string? Foto { get; set; }
-        public DateTime FechaNaciomiento { get; set; } = DateTime.Today;
+        public DateTime? FechaNaciomiento { get; set; }
     }
 }

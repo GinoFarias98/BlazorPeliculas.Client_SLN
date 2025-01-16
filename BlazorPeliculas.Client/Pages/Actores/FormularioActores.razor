@@ -18,9 +18,13 @@
 	</div>
 
 	<div class="mb-3">
+		<InputImg Label="Foto" ImagenSeleccionada="imagenSeleccionada" imagenURL="@imagenURL" />
 	</div>
 
-	<div class="mb-3">
+	<div class="mb-3 form-markdown">
+		<InputMarkdown @bind-Value="@Actor.Biografia" 
+		For=@(()=> Actor.Biografia)
+		Label="Biografia"/>
 	</div>
 
 	<button class="btn btn-success">Guardar Cambios</button>
@@ -29,6 +33,24 @@
 
 
 @code {
+
+	string? imagenURL;
+
+	protected override void OnInitialized()
+	{
+		if (!string.IsNullOrEmpty(Actor.Foto))
+		{
+			imagenURL = Actor.Foto;
+			Actor.Foto = null;
+		}
+	}
+
+	private void imagenSeleccionada(string imagenBase64)
+	{
+		Actor.Foto = imagenBase64;
+		imagenURL = null;
+	}
+
 	[Parameter]
 	[EditorRequired]
 	public Actor? Actor { get; set; }
