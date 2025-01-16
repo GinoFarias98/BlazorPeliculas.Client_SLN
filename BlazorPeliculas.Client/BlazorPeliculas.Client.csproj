@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.Typeahead" Version="4.7.0" />
     <PackageReference Include="CurrieTechnologies.Razor.SweetAlert2" Version="5.3.0" />
     <PackageReference Include="Markdig" Version="0.40.0" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />

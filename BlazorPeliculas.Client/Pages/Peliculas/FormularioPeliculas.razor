@@ -44,6 +44,22 @@
 		</div>
 	</div>
 
+	<div class="mb-3">
+		<label>Actores:</label>
+		<div>
+			<SelectorMultipleTypeahead Context="Actor" SearchMethod="BuscarActores"
+			ElementosSeleccionados="ActoresSeleccionados">
+				<MyListTemplate>
+					@Actor.Nombre
+				</MyListTemplate>
+				<MyResultTemplate>
+					<img style="width: 50px" src="@Actor.Foto"/>
+					@Actor.Nombre
+				</MyResultTemplate>
+			</SelectorMultipleTypeahead>
+		</div>
+	</div>
+
 	<button class="btn btn-success">Guardar Cambios</button>
 
 </EditForm>
@@ -66,8 +82,12 @@
 	[EditorRequired]
 	public List<Genero> GenerosNoSeleccionados { get; set; } = new List<Genero>();
 
+	[Parameter]
+	public List<Actor> ActoresSeleccionados { get; set; } = new List<Actor>();
+
 	private List<SelectorMultipleModel> Seleccionados { get; set; } = new List<SelectorMultipleModel>();
 	private List<SelectorMultipleModel> NoSeleccionados { get; set; } = new List<SelectorMultipleModel>();
+
 
 
 	protected override void OnInitialized()
@@ -91,4 +111,13 @@
 		Pelicula.Poster = imagenBase64;
 		imagenURL = null;
 	}
+
+	private async Task<IEnumerable<Actor>> BuscarActores(string searchText)
+	{
+		return new List<Actor>(){
+			new Actor{Id = 1, Nombre = "Tom Holland" , Foto = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFqfXldhP-yELmPXZlQ02ZBfQ8sbyW8CqRfQ&s"},
+			new Actor{Id = 2, Nombre = "Tom Hanks" , Foto = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Tom_Hanks_TIFF_2019.jpg"}
+		};
+	}
+
 }
