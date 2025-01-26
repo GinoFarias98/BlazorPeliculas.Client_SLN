@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorPeliculas.Client", "B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorPeliculas.Shared", "BlazorPeliculas.Shared\BlazorPeliculas.Shared.csproj", "{E52E48FA-6233-40F1-ACE6-195AD3DDC068}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorPeliculas.Server", "BlazorPeliculas.Server\BlazorPeliculas.Server.csproj", "{0C7DD281-659F-407A-AAB0-3776FCBE6E50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorPeliculas.DB", "BlazorPeliculas.DB\BlazorPeliculas.DB.csproj", "{936B005B-C131-4FA9-B8AB-01811F221D94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{E52E48FA-6233-40F1-ACE6-195AD3DDC068}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E52E48FA-6233-40F1-ACE6-195AD3DDC068}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E52E48FA-6233-40F1-ACE6-195AD3DDC068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C7DD281-659F-407A-AAB0-3776FCBE6E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C7DD281-659F-407A-AAB0-3776FCBE6E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C7DD281-659F-407A-AAB0-3776FCBE6E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C7DD281-659F-407A-AAB0-3776FCBE6E50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936B005B-C131-4FA9-B8AB-01811F221D94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936B005B-C131-4FA9-B8AB-01811F221D94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936B005B-C131-4FA9-B8AB-01811F221D94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936B005B-C131-4FA9-B8AB-01811F221D94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

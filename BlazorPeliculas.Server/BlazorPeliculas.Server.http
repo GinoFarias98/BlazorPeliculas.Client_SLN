@@ -1,0 +1,6 @@
+@BlazorPeliculas.Server_HostAddress = http://localhost:5105
+
+GET {{BlazorPeliculas.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

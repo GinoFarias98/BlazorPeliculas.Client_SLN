@@ -1,11 +1,12 @@
-﻿using System;
+﻿using BlazorPeliculas.DB.Data.Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Shared.Entidades
+namespace BlazorPeliculas.DB.Data.Entidades
 {
 	public class Pelicula
 	{

@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace BlazorPeliculas.Shared.Entidades
 {
-    public class GeneroPelicula
+    public class PeliculaActor
     {
         // Al ser una relacion n-m necesitamos una PK compuesta, lo configuramos en el Context
 
+        public int ActorId { get; set; }
         public int PeliculaId { get; set; }
-        public int GeneroId { get; set; }
-        public Genero? Genero { get; set; }
+        public Actor? Actor { get; set; }
         public Pelicula? Pelicula { get; set; }
+        public string? Personaje { get; set; }
+        public int Orden { get; set; }
+
     }
 }
