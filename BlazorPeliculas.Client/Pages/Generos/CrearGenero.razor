@@ -1,19 +1,29 @@
 ﻿@page "/generos/crear"
 @inject NavigationManager navigationManager
+@inject IHttpServicio httpServicio
+@inject SweetAlertService swal
 
 <h3>Crear Género</h3>
 
 <FormulariosGenero @ref="formularioGenero" Genero="Genero" OnValidSubmit="Crear" />
 
 @code {
-	private Genero Genero = new Genero();
-	private FormulariosGenero? formularioGenero;
+    private Genero Genero = new Genero();
+    private FormulariosGenero? formularioGenero;
 
-	private void Crear()
-	{
-		formularioGenero!.FormularioPosteadoConExito = true;
-		Console.WriteLine("Ejecutando metodo crear");
-		Console.WriteLine($"Genero crrado: {Genero.Nombre}");
-		navigationManager.NavigateTo("generos");
-	}
+    private async Task Crear()
+    {
+        var httpResponse = await httpServicio.Post("api/generos", Genero);
+
+        if (httpResponse.Error)
+        {
+            var mensajeError = await httpResponse.ObtenerError(); // Obtener el mensaje del servidor
+            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            formularioGenero!.FormularioPosteadoConExito = true;
+            navigationManager.NavigateTo("generos");
+        }
+    }
 }
