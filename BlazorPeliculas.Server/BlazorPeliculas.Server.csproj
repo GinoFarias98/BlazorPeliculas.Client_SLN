@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BlazorPeliculas.DB\BlazorPeliculas.DB.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

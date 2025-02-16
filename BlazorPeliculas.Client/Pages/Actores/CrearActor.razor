@@ -1,4 +1,7 @@
 ﻿@page "/actores/crear"
+@inject NavigationManager navigationManager
+@inject IHttpServicio httpServicio
+@inject SweetAlertService swal
 
 <h3>Crear Actor</h3>
 
@@ -7,8 +10,18 @@
 @code {
 	private Actor Actor = new Actor();
 
-	void Crear()
+	async Task Crear()
 	{
-		Console.WriteLine("crear actor");
+        var httpResponse = await httpServicio.Post("api/actores", Actor);
+
+        if (httpResponse.Error)
+        {
+            var mensajeError = await httpResponse.ObtenerError(); // Obtener el mensaje del servidor
+            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            navigationManager.NavigateTo("actores");
+        }
 	}
 }

@@ -1,4 +1,5 @@
 using BlazorPeliculas.DB.Data;
+using BlazorPeliculas.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,9 @@ builder.Services.AddSwaggerGen();
 // Coneccion con la BD / Context
 
 builder.Services.AddDbContext<Context>(op => op.UseSqlServer("name=conn"));
+
+builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosLocal>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
