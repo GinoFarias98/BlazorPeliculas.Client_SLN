@@ -1,4 +1,6 @@
 ﻿@page "/actores"
+@inject IHttpServicio httpServicio
+
 
 <h3>Indice Actores</h3>
 
@@ -6,6 +8,39 @@
 	<a href="actores/crear" class="btn btn-info">Crear Actor</a>
 </div>
 
-@code {
+<ListadoGenerico Listado="Actores">
+	<HayRegistrosCompleto>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Nombre</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Actores)
+				{
+					<tr>
+						<td>
+							<a href="actores/editar/@item.Id" class="btn btn-success">Editar</a>
+							<button class="btn btn-danger">Borrar</button>
+						</td>
+						<td>
+							@item.Nombre
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</HayRegistrosCompleto>
+</ListadoGenerico>
 
+@code {
+	public List<Actor> Actores { get; set; } = null!;
+
+	protected async override Task OnInitializedAsync()
+	{
+		var respuestaHTTP = await httpServicio.Get<List<Actor>>("api/actores");
+		Actores = respuestaHTTP.Respuesta;
+	}
 }

@@ -1,4 +1,5 @@
 ﻿@page "/generos"
+@inject IHttpServicio httpServicio
 
 <h3>Indice Géneros</h3>
 
@@ -6,6 +7,39 @@
 	<a class="btn btn-info" href="generos/crear">Agregar Genero</a>
 </div>
 
-@code {
+<ListadoGenerico Listado="Generos">
+	<HayRegistrosCompleto>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Nombre</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var item in Generos)
+				{
+					<tr>
+						<td>
+							<a href="generos/editar/@item.Id" class="btn btn-success">Editar</a>
+							<button class="btn btn-danger">Borrar</button>
+						</td>
+						<td>
+							@item.Nombre
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</HayRegistrosCompleto>
+</ListadoGenerico>
 
+@code {
+	public List<Genero> Generos { get; set; } = null!;
+
+	protected async override Task OnInitializedAsync()
+	{
+		var respuestaHTTP = await httpServicio.Get<List<Genero>>("api/generos");
+		Generos = respuestaHTTP.Respuesta;
+	}
 }

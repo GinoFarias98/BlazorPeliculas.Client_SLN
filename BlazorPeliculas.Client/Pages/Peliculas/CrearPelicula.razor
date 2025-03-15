@@ -1,31 +1,48 @@
 ﻿@page "/peliculas/crear"
 @inject NavigationManager navigationManager
+@inject IHttpServicio httpServicio
+@inject SweetAlertService swal
 
 <h3>Crear Película</h3>
 
-<FormularioPeliculas Pelicula="Pelicula" OnValidSubmit="Crear"
-	GenerosNoSeleccionados="GenerosNoSeleccionados"
-></FormularioPeliculas>
+@if (MostrarFormulario)
+{
+	<FormularioPeliculas Pelicula="Pelicula" OnValidSubmit="Crear"
+	GenerosNoSeleccionados="GenerosNoSeleccionados"></FormularioPeliculas>
+}
+else
+{
+	<p>Cargando...</p>
+}
+
+
+
 
 @code {
-	private Pelicula Pelicula = new Pelicula(); 
-	private List<Genero> GenerosNoSeleccionados = new List<Genero>();
+	private PeliculaDTO Pelicula = new PeliculaDTO();
+	private List<GeneroDTO> GenerosNoSeleccionados = new List<GeneroDTO>();
+	public bool MostrarFormulario { get; set; } = false;
 
-	protected override void OnInitialized()
+	protected async override Task OnInitializedAsync()
 	{
-		GenerosNoSeleccionados = new List<Genero>()
-		{
-			new Genero(){Id = 1, Nombre = "Comedia"},
-			new Genero(){Id = 2, Nombre = "Drama"},
-			new Genero(){Id = 3, Nombre = "Accion"},
-			new Genero(){Id = 4, Nombre = "Sci-Fi"}
-		};
+		var respuestaHTTP = await httpServicio.Get<List<GeneroDTO>>("api/generos");
+		GenerosNoSeleccionados = respuestaHTTP.Respuesta;
+		MostrarFormulario = true;
 	}
 
-	void Crear()
+	async Task Crear()
 	{
-		Console.WriteLine(navigationManager.BaseUri);
-		navigationManager.NavigateTo("pelicula");
+		var httpResponse = await httpServicio.Post("api/peliculas", Pelicula);
 
+		if (httpResponse.Error)
+		{
+			var mensajeError = await httpResponse.ObtenerError(); // Obtener el mensaje del servidor
+			await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+		}
+		else
+		{
+			var peliculaId = httpResponse.Respuesta;
+			navigationManager.NavigateTo($"/pelicula/{peliculaId}/{Pelicula.Nombre.Replace(" ", "-")}");
+		}
 	}
 }

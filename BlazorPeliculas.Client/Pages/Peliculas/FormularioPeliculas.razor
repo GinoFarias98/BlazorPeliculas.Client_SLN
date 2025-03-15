@@ -1,4 +1,6 @@
-﻿<EditForm Model="Pelicula" OnValidSubmit="OnValidSubmit">
+﻿@inject IHttpServicio httpServicio
+
+<EditForm Model="Pelicula" OnValidSubmit="OnDataAnnotationsValidated">
 	<DataAnnotationsValidator />
 
 	<div class="mb-3">
@@ -14,6 +16,14 @@
 		<div>
 			<InputCheckbox @bind-Value="@Pelicula.EnCartelera" />
 			<ValidationMessage For="@(()=>Pelicula.EnCartelera)" />
+		</div>
+	</div>
+
+	<div class="mb-3">
+		<label>Trailer:</label>
+		<div>
+			<InputText class="form-control" @bind-Value="@Pelicula.Trailer" />
+			<ValidationMessage For="@(()=>Pelicula.Trailer)" />
 		</div>
 	</div>
 
@@ -50,7 +60,7 @@
 			<SelectorMultipleTypeahead Context="Actor" SearchMethod="BuscarActores"
 			ElementosSeleccionados="ActoresSeleccionados">
 				<MyListTemplate>
-					@Actor.Nombre
+					@Actor.Nombre / <input typeof="text" placeholder="Personaje" @bind="Actor.Personaje"/>
 				</MyListTemplate>
 				<MyResultTemplate>
 					<img style="width: 50px" src="@Actor.Foto"/>
@@ -69,21 +79,21 @@
 
 	[Parameter]
 	[EditorRequired]
-	public Pelicula Pelicula { get; set; } = null!;
+	public PeliculaDTO Pelicula { get; set; } = null!;
 
 	[Parameter]
 	[EditorRequired]
 	public EventCallback OnValidSubmit { get; set; }
 
 	[Parameter]
-	public List<Genero> GenerosSeleccionados { get; set; } = new List<Genero>();
+	public List<GeneroDTO> GenerosSeleccionados { get; set; } = new List<GeneroDTO>();
 
 	[Parameter]
 	[EditorRequired]
-	public List<Genero> GenerosNoSeleccionados { get; set; } = new List<Genero>();
+	public List<GeneroDTO> GenerosNoSeleccionados { get; set; } = new List<GeneroDTO>();
 
 	[Parameter]
-	public List<Actor> ActoresSeleccionados { get; set; } = new List<Actor>();
+	public List<ActorDTO> ActoresSeleccionados { get; set; } = new List<ActorDTO>();
 
 	private List<SelectorMultipleModel> Seleccionados { get; set; } = new List<SelectorMultipleModel>();
 	private List<SelectorMultipleModel> NoSeleccionados { get; set; } = new List<SelectorMultipleModel>();
@@ -112,12 +122,22 @@
 		imagenURL = null;
 	}
 
-	private async Task<IEnumerable<Actor>> BuscarActores(string searchText)
+	private async Task<IEnumerable<ActorDTO>> BuscarActores(string searchText)
 	{
-		return new List<Actor>(){
-			new Actor{Id = 1, Nombre = "Tom Holland" , Foto = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFqfXldhP-yELmPXZlQ02ZBfQ8sbyW8CqRfQ&s"},
-			new Actor{Id = 2, Nombre = "Tom Hanks" , Foto = "https://upload.wikimedia.org/wikipedia/commons/a/a9/Tom_Hanks_TIFF_2019.jpg"}
-		};
+		var respuestaHTTP = await httpServicio.Get<List<ActorDTO>>($"api/actores/buscar/{searchText}");
+		return respuestaHTTP.Respuesta;
 	}
 
+	private async Task OnDataAnnotationsValidated()
+	{
+		Pelicula.GererosPelicula = Seleccionados
+		.Select(x => new GeneroPeliculaDTO { GeneroId = int.Parse(x.Llave)}).ToList();
+
+
+		//Actualmente esto funciona por el Proyecto Shared. En un futuro tengo que hacerlo mediante un DTO.
+		Pelicula.PeliculasActor = ActoresSeleccionados
+		.Select(x => new PeliculaActorDTO { ActorId = x.Id, Personaje = x.Personaje }).ToList();
+
+		await OnValidSubmit.InvokeAsync();
+	}
 }

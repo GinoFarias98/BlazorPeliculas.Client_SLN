@@ -38,7 +38,7 @@
 
 	protected override void OnInitialized()
 	{
-		if (!string.IsNullOrEmpty(Actor.Foto))
+		if (!string.IsNullOrEmpty(Actor!.Foto))
 		{
 			imagenURL = Actor.Foto;
 			Actor.Foto = null;
@@ -47,7 +47,7 @@
 
 	private void imagenSeleccionada(string imagenBase64)
 	{
-		Actor.Foto = imagenBase64;
+		Actor!.Foto = imagenBase64;
 		imagenURL = null;
 	}
 

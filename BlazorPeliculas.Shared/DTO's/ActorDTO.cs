@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlazorPeliculas.DB.Data.Entidades;
 
-namespace BlazorPeliculas.Shared.Entidades
+namespace BlazorPeliculas.Shared.DTO_s
 {
-    public class Actor
+    public class ActorDTO
     {
         public int Id { get; set; }
 

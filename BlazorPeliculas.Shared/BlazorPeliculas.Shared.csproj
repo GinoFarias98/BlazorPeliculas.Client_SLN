@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorPeliculas.DB\BlazorPeliculas.DB.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@
 		<a href="@urlPelicula" class="text-decoration-none">@Pelicula.Nombre</a>
 	</p>
 	<div>
-		<a class="btn btn-info">Editar</a>
+		<a class="btn btn-info" href="peliculas/editar/@Pelicula.Id">Editar</a>
 		<button type="button" class="btn btn-danger"
 				@onclick=@(()=> EliminarPelicula.InvokeAsync(Pelicula))>
 			Borrar
@@ -17,19 +17,19 @@
 @code {
 	[Parameter]
 	[EditorRequired] //Parametro requerido para indicar que algo es obligatorio. Esto genera una advertencia por lo que permite compilar la App.
-	public Pelicula Pelicula { get; set; } = null!;
+	public PeliculaDTO Pelicula { get; set; } = null!;
 
 	[Parameter]
 	public bool MostrarBotones { get; set; } = false;
 
 	[Parameter]
-	public EventCallback<Pelicula> EliminarPelicula { get; set; }
+	public EventCallback<PeliculaDTO> EliminarPelicula { get; set; }
 	//Le paso una pelicula al eventcallback  para eliminar
 
 	private string urlPelicula = string.Empty;
 
 	protected override void OnInitialized()
 	{
-		urlPelicula = $"peliula/";
+		urlPelicula = $"pelicula/{Pelicula.Id}/{Pelicula.Nombre.Replace(" ","-")}";
 	}
 }

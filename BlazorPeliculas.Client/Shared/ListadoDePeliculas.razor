@@ -18,9 +18,9 @@
 	//Colocamos un parametro o atributo <-- Siempre debe ser public
 	[Parameter]
 	[EditorRequired]  //Parametro requerido para indicar que algo es obligatorio. Esto genera una advertencia por lo que permite compilar la App.
-	public List<Pelicula>? Peliculas { get; set; }
+	public List<PeliculaDTO>? Peliculas { get; set; }
 
-	private async Task EliminarPelicula(Pelicula pelicula)
+	private async Task EliminarPelicula(PeliculaDTO pelicula)
 	{
 		var Confirmado = await Js.Confirmar($"¿Desea eliminar la pelicula {pelicula.Nombre}?"); // encapsulo el metodo de JS en una clase IJSRuntimeEtensionMethods.
 

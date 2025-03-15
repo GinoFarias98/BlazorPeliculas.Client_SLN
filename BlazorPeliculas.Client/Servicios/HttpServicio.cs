@@ -14,19 +14,20 @@ namespace BlazorPeliculas.Client.Servicios
             this.http = http;
         }
 
-        public async Task<HttpRespuesta<O>> Get<O>(string url)
+        public async Task<HttpRespuesta<T>> Get<T>(string url)
         {
             var response = await http.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                var respuesta = await DesSerealizar<O>(response);
-                return new HttpRespuesta<O>(respuesta, false, response);
+                var respuesta = await DesSerealizar<T>(response);
+                return new HttpRespuesta<T>(respuesta, false, response);
             }
             else
             {
-                return new HttpRespuesta<O>(default, true, response);
+                return new HttpRespuesta<T>(default!, true, response);
             }
         }
+
 
         public async Task<HttpRespuesta<object>> Post<O>(string url, O entidad)  // "O" lo que se envia, "object" lo que recibo.
         {
@@ -41,11 +42,11 @@ namespace BlazorPeliculas.Client.Servicios
             }
             else
             {
-                return new HttpRespuesta<object>(default, true, response);
+                return new HttpRespuesta<object>(default!, true, response);
             }
-		}
+        }
 
-        public async Task<HttpRespuesta<object>> Put<O>(string url, O entidad)
+        public async Task<HttpRespuesta<object>> Put<T>(string url, T entidad)
         {
             var enviarJson = JsonSerializer.Serialize(entidad);
 
@@ -56,11 +57,11 @@ namespace BlazorPeliculas.Client.Servicios
             var response = await http.PutAsync(url, enviarContent);
             if (response.IsSuccessStatusCode)
             {
-                return new HttpRespuesta<object>(null, false, response);
+                return new HttpRespuesta<object>(null!, false, response);
             }
             else
             {
-                return new HttpRespuesta<object>(default, true, response);
+                return new HttpRespuesta<object>(default!, true, response);
             }
         }
 
@@ -71,17 +72,17 @@ namespace BlazorPeliculas.Client.Servicios
             if (!respuestaHttp.IsSuccessStatusCode)
             {
                 var error = await respuestaHttp.Content.ReadAsStringAsync();
-                return new HttpRespuesta<object>(null, true, respuestaHttp); // Pasar el HttpResponseMessage directamente.
+                return new HttpRespuesta<object>(null!, true, respuestaHttp); // Pasar el HttpResponseMessage directamente.
             }
 
-            return new HttpRespuesta<object>(null, false, respuestaHttp);
+            return new HttpRespuesta<object>(null!, false, respuestaHttp);
         }
 
 
-        private async Task<O> DesSerealizar<O>(HttpResponseMessage response)
+        private async Task<T> DesSerealizar<T>(HttpResponseMessage response)
         {
             var respuesta = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<O>(respuesta, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<T>(respuesta, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })!;
         }
     }
 }

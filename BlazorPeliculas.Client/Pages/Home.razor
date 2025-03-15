@@ -1,20 +1,28 @@
 ﻿@page "/"
-@inject IRepositorio repositorio
+@inject IHttpServicio httpServicio
 
 <PageTitle> Peliculas Blazor</PageTitle>
 
- <div>
-	<h3>Peliculas</h3>
-	<ListadoDePeliculas Peliculas="Peliculas" />
+<div>
+	<h3>En Cartelera </h3>
+	<ListadoDePeliculas Peliculas="EnCartelera" />
+</div>
+
+<div>
+	<h3>Proximos Estrenos</h3>
+	<ListadoDePeliculas Peliculas="FuturosEstrenos" />
 </div>
 
 @code {
 
-	public List<Pelicula> Peliculas {get; set;} = null!;
+	public List<PeliculaDTO>? EnCartelera { get; set; }
+	public List<PeliculaDTO>? FuturosEstrenos { get; set; }
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		Peliculas = repositorio.ObtenerPeliculas();
+		var respuestaHTTP = await httpServicio.Get<HomePageDTO>("api/peliculas");
+		EnCartelera = respuestaHTTP.Respuesta.PeliculasEnCartelera;
+		FuturosEstrenos = respuestaHTTP.Respuesta.ProximosEstrenos;
 	}
 
 }

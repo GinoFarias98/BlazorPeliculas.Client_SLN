@@ -1,7 +1,62 @@
 ﻿@page "/pelicula/{PeliculaId:int}"
 @page "/pelicula/{PeliculaId:int}/{NombrePelicula}"
+@inject IHttpServicio httpServicio
+@inject SweetAlertService swal
 
-<h3>VisualizarPelicula</h3>
+@if (modelo is null)
+{
+	// si el modelo esta vacio entonces cargando...
+	<p>Cargando...</p>
+}
+else
+{
+	// Obtengo el nombre de la pelicula junto con el anio en el que se estreno.
+	<h2>
+		@modelo.Pelicula!.Nombre (@modelo.Pelicula.Lanzamiento!.Value.ToString("yyyy"))
+	</h2>
+
+	foreach(var genero in modelo.Generos!)
+	{
+		<a class="me-2 badge bg-primary rounded-pill text-decoration-none" href="peliculas/buscar?generoid=@genero.Id">
+			@genero.Nombre
+		</a>
+	}
+	<span>| @modelo.Pelicula.Lanzamiento!.Value.ToString("dd MMM yyyy")
+		| Promedio: @modelo.PromedioVotos.ToString("0.#")/5
+		| Tu Voto: @modelo.VotoUsuario.ToString()
+	</span>
+
+	<div class="d-flex mt-2">
+		<span style="display: inline-block;" class="me-2">
+			<img src="@modelo.Pelicula.Poster" style="width: 225px; height: 315px"  />
+		</span>
+
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/@modelo.Pelicula.Trailer" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+	</div>
+
+	<div class="mt-2">
+		<h3>Resumen</h3>
+		<div>
+			<MostrarMarkdown ContenidoMarkdown="@modelo.Pelicula.Resumen"></MostrarMarkdown>
+		</div>
+	</div>
+
+	<div class="mt-2">
+		<h3>Actores</h3>
+		<div class="d-flex flex-column">
+			@foreach(var actor in modelo.Actores!)
+			{
+				<div class="mb-2">
+					<img style="width: 50px;" src="@actor.Foto" />
+					<span style="display: inline-block; width: 200px">@actor.Nombre</span>
+					<span style="display: inline-block; width: 45px">...</span>
+					<span>@actor.Personaje</span>
+				</div>
+			}
+		</div>
+	</div>
+}
 
 @code {
 
@@ -11,8 +66,21 @@
 	[Parameter]
 	public string NombrePelicula { get; set; } = null!;
 
-	protected override void OnInitialized()
+	private PeliculaVisualizarDTO? modelo;
+
+	protected override async Task OnInitializedAsync()
 	{
-		Console.WriteLine($"El Id de la pelicula es {PeliculaId}");
+		var respuestaHTTP = await httpServicio
+			.Get<PeliculaVisualizarDTO>($"api/peliculas/{PeliculaId}");
+
+		if (respuestaHTTP.Error)
+		{
+			var mensajeError = await respuestaHTTP.ObtenerError(); // Obtener el mensaje del servidor
+			await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+		}
+		else
+		{
+			modelo = respuestaHTTP.Respuesta;
+		}
 	}
 }
